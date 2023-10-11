@@ -1,10 +1,11 @@
 import { Router } from "express";
+import { addEvent } from "../controllers/eventsController";
 
 const eventsRouter = Router();
 
 eventsRouter.get("/getEvents");
 
-eventsRouter.post("/addEvent");
+eventsRouter.post("/addEvent", addEvent);
 
 eventsRouter.put("/updateEvent");
 

@@ -6,13 +6,15 @@ class Evento {
 
     constructor(
         nome: string,
+        descricao: string,
         dataInicial: string,
-        dataFinal: string,
-        descricao: string
+        dataFinal: string
     ) {
         this.nome = nome;
+        this.descricao = descricao;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
-        this.descricao = descricao;
     }
 }
+
+export default Evento;

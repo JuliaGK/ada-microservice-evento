@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import eventsRouter from "../routes/eventsRoute";
-import { createDbConnection } from "../db/dbConfig";
+import eventsRouter from "./routes/eventsRoute";
+import { createDbConnection } from "./db/dbConfig";
 
 dotenv.config();
 

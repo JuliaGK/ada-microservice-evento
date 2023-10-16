@@ -9,17 +9,29 @@ const addParticipant = async (req: Request, res: Response) => {
     };
     const participant: Participant = req.body;
 
-    if (await validateParticipant(participant.userId)) {
-        console.log("Existe");
+    const response = await validateParticipant(participant.userId).then();
+
+    if (response) {
+        const sql = `
+            INSERT INTO participants(idUser, idEvent) VALUES (${participant.userId}, ${participant.eventId});
+        `;
+        db.run(sql, (error: Error) => {
+            if (error) {
+                res.status(400);
+                res.end(error);
+            }
+            res.status(201);
+            res.send("participant added");
+        });
+    } else {
+        res.send("participant not added");
     }
-    console.log("nao existe");
 };
 
 async function validateParticipant(userId: string) {
     try {
         await axios.get(`http://localhost:3001/users/${userId}`);
     } catch (error) {
-        console.log(error);
         return false;
     }
     return true;

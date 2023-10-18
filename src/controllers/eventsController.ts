@@ -5,10 +5,10 @@ import axios from "axios";
 
 const addEvent = (req: Request, res: Response) => {
     const newEvent: Evento = req.body;
-    const sqlEvents = `INSERT INTO events (nome, descricao, dataInicial, dataFinal)
+    const sql = `INSERT INTO events (nome, descricao, dataInicial, dataFinal)
     VALUES ("${newEvent.nome}", "${newEvent.descricao}", "${newEvent.dataInicial}", "${newEvent.dataFinal}");`;
 
-    db.run(sqlEvents, (error: Error) => {
+    db.run(sql, (error: Error) => {
         if (error) {
             res.status(400);
             res.end(error);
@@ -18,4 +18,24 @@ const addEvent = (req: Request, res: Response) => {
     });
 };
 
-export { addEvent };
+const getEvent = (req: Request, res: Response) => {
+    const id = req.params.id;
+    const sql = `
+        SELECT * FROM events WHERE id=${id};
+    `;
+    db.get(sql, [], (error: Error, row: any) => {
+        if (error) {
+            res.status(400);
+            res.end(error);
+        }
+        console.log(row);
+        if (row) {
+            res.send(row);
+        } else {
+            res.status(404);
+            res.send("Event not found");
+        }
+    });
+};
+
+export { addEvent, getEvent };

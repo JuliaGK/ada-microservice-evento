@@ -11,7 +11,6 @@ const createDbConnection = () => {
     });
     console.log("Connection with SQLite has been estabilished");
     createTableEvents();
-    createTableParticipants();
     return db;
 };
 
@@ -24,14 +23,6 @@ const createTableEvents = () => {
         dataFinal VARCHAR(50)
     );
     `);
-};
-
-const createTableParticipants = () => {
-    db.exec(`CREATE TABLE IF NOT EXISTS participants (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        idUser INTEGER,
-        idEvent INTEGER
-    )`);
 };
 
 export { createDbConnection, db };

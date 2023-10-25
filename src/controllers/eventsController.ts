@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import Evento from "../models/Evento";
 import { db } from "../db/dbConfig";
-import axios from "axios";
 
 const addEvent = (req: Request, res: Response) => {
     const newEvent: Evento = req.body;
-    const sql = `INSERT INTO events (nome, descricao, dataInicial, dataFinal)
-    VALUES ("${newEvent.nome}", "${newEvent.descricao}", "${newEvent.dataInicial}", "${newEvent.dataFinal}");`;
+    const sql = `INSERT INTO events (nome, descricao, data, duracao, vagas)
+    VALUES ("${newEvent.nome}", "${newEvent.descricao}", "${newEvent.data}", "${newEvent.duracao}", "${newEvent.vagas}");`;
 
     db.run(sql, (error: Error) => {
         if (error) {

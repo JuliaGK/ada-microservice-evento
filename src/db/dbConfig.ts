@@ -19,8 +19,9 @@ const createTableEvents = () => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome VARCHAR(50),
         descricao VARCHAR(50),
-        dataInicial VARCHAR(50),
-        dataFinal VARCHAR(50)
+        data VARCHAR(50),
+        duracao VARCHAR(50),
+        vagas INTEGER
     );
     `);
 };

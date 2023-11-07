@@ -36,33 +36,40 @@ export const addEventHandler = async (event: Evento) => {
     }
 };
 
+export const getEventHandler = async (id: number) => {
+    const db = await dbPromise;
+
+    if (!id) {
+        throw createError.BadRequest("Missing valid id");
+    }
+
+    const event = await db.get("SELECT * FROM events WHERE id = ?", id);
+
+    if (event) {
+        return event;
+    } else {
+        throw createError.NotFound();
+    }
+};
+
 export const eventsController = {
     addEvent: async (req: Request, res: Response) => {
-        const event: Evento = req.body;
-        await addEventHandler(event);
-        res.status(201).send("event added");
+        try {
+            const event: Evento = req.body;
+            await addEventHandler(event);
+            res.status(201).send("event added");
+        } catch (error) {
+            res.status(404).send(error);
+        }
     },
 
     getEvent: async (req: Request, res: Response) => {
-        const id = req.params.id;
-        const sql = `
-            SELECT * FROM events WHERE id=${id};
-        `;
-
-        const db = await dbPromise;
-
-        db.get(sql, [], (error: Error, row: any) => {
-            if (error) {
-                res.status(400);
-                res.end(error);
-            }
-            console.log(row);
-            if (row) {
-                res.send(row);
-            } else {
-                res.status(404);
-                res.send("Event not found");
-            }
-        });
+        try {
+            const id = req.params.id;
+            const event = await getEventHandler(Number(id));
+            res.json(event);
+        } catch (error) {
+            res.status(404).send(error);
+        }
     },
 };

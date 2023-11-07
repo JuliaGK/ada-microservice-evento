@@ -1,5 +1,5 @@
-class Evento {
-    id?: number;
+class Event {
+    id: number;
     name: string;
     description: string;
     date: Date;
@@ -7,12 +7,14 @@ class Evento {
     seats: number;
 
     constructor(
+        id: number,
         name: string,
         description: string,
         date: Date,
         duration: string,
         seats: number
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.date = date;
@@ -21,4 +23,4 @@ class Evento {
     }
 }
 
-export default Evento;
+export default Event;

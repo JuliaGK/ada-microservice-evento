@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import Evento from "../models/Event";
+import Event from "../models/Event";
 import { initializeDatabase } from "../db/dbConfig";
 import createError from "http-errors";
 
 const dbPromise = initializeDatabase();
 
-export const addEventHandler = async (event: Evento) => {
+export const addEventHandler = async (event: Event) => {
     const db = await dbPromise;
 
     if (
@@ -55,7 +55,7 @@ export const getEventHandler = async (id: number) => {
 export const eventsController = {
     addEvent: async (req: Request, res: Response) => {
         try {
-            const event: Evento = req.body;
+            const event: Event = req.body;
             await addEventHandler(event);
             res.status(201).send("event added");
         } catch (error) {

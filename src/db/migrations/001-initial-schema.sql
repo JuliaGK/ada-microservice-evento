@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR(50),
-    descricao VARCHAR(50),
+    name VARCHAR(50),
+    description VARCHAR(50),
     data VARCHAR(50),
-    duracao VARCHAR(50),
-    vagas INTEGER
+    duration VARCHAR(50),
+    seats INTEGER
 );

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Evento from "../models/Evento";
+import Evento from "../models/Event";
 import { initializeDatabase } from "../db/dbConfig";
 
 const dbPromise = initializeDatabase();

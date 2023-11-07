@@ -1,29 +1,46 @@
 import { Request, Response } from "express";
 import Evento from "../models/Event";
 import { initializeDatabase } from "../db/dbConfig";
+import createError from "http-errors";
 
 const dbPromise = initializeDatabase();
 
 export const addEventHandler = async (event: Evento) => {
     const db = await dbPromise;
+
+    if (
+        !event.name ||
+        !event.description ||
+        !event.date ||
+        !event.duration ||
+        !event.seats
+    ) {
+        throw createError.BadRequest("Missing required properties");
+    }
+
+    try {
+        const result = await db.run(
+            `INSERT INTO events (name, description, date, duration, seats) VALUES (?, ?, ?, ?, ?)`,
+            [
+                event.name,
+                event.description,
+                event.date,
+                event.duration,
+                event.seats,
+            ]
+        );
+        return result;
+    } catch (error) {
+        console.error("Error in addEvent: ", error);
+        throw createError.InternalServerError();
+    }
 };
 
 export const eventsController = {
     addEvent: async (req: Request, res: Response) => {
-        const newEvent: Evento = req.body;
-        const sql = `INSERT INTO events (nome, descricao, data, duracao, vagas)
-        VALUES ("${newEvent.name}", "${newEvent.description}", "${newEvent.date}", "${newEvent.duration}", "${newEvent.seats}");`;
-
-        const db = await dbPromise;
-
-        db.run(sql, (error: Error) => {
-            if (error) {
-                res.status(400);
-                res.end(error);
-            }
-            res.status(201);
-            res.send("event added");
-        });
+        const event: Evento = req.body;
+        await addEventHandler(event);
+        res.status(201).send("event added");
     },
 
     getEvent: async (req: Request, res: Response) => {
